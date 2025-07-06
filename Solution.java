@@ -1,40 +1,33 @@
 package WorkingOut;
+
 import java.util.Scanner;
 
 public class Solution {
 
     static String conversions(String str) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         char ch;
-        for(int i = 0; i < str.length(); i++) {
+        for (int i = 0; i < str.length(); i++) {
             ch = str.charAt(i);
-            if((ch >=0 && ch <=9) || (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z')) {
-                result += ch;
-            }
-            else {
-                continue;
+            if (Character.isLetterOrDigit(ch)) { // includes both letters and digits
+                result.append(Character.toLowerCase(ch));
             }
         }
-        result = result.toLowerCase();
-        return result;
+        return result.toString();
     }
 
     static boolean isPalindrome(String str) {
-        String reversed = "";
-        for(int i = str.length() - 1; i >= 0; i--) {
-            reversed += str.charAt(i);
+        int left = 0, right = str.length() - 1;
+        while (left < right) {
+            if (str.charAt(left) != str.charAt(right)) return false;
+            left++;
+            right--;
         }
-        if(str.equals(reversed)) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return true;
     }
 
     public static void main(String[] args) {
         Scanner inputs = new Scanner(System.in);
-
         System.out.print("Enter the word(s) : ");
         String str = inputs.nextLine();
         String conv = conversions(str);
