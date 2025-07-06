@@ -1,38 +1,29 @@
 package WorkingOut;
 
-import java.util.Scanner;
-
 public class Solution {
+    public boolean isPalindrome(String s) {
+        int left = 0, right = s.length() - 1;
 
-    static String conversions(String str) {
-        StringBuilder result = new StringBuilder();
-        char ch;
-        for (int i = 0; i < str.length(); i++) {
-            ch = str.charAt(i);
-            if (Character.isLetterOrDigit(ch)) { // includes both letters and digits
-                result.append(Character.toLowerCase(ch));
-            }
-        }
-        return result.toString();
-    }
-
-    static boolean isPalindrome(String str) {
-        int left = 0, right = str.length() - 1;
         while (left < right) {
-            if (str.charAt(left) != str.charAt(right)) return false;
+            // Move left pointer to the next alphanumeric character
+            while (left < right && !Character.isLetterOrDigit(s.charAt(left))) {
+                left++;
+            }
+
+            // Move right pointer to the previous alphanumeric character
+            while (left < right && !Character.isLetterOrDigit(s.charAt(right))) {
+                right--;
+            }
+
+            // Compare characters after converting to lowercase
+            if (Character.toLowerCase(s.charAt(left)) != Character.toLowerCase(s.charAt(right))) {
+                return false;
+            }
+
             left++;
             right--;
         }
-        return true;
-    }
 
-    public static void main(String[] args) {
-        Scanner inputs = new Scanner(System.in);
-        System.out.print("Enter the word(s) : ");
-        String str = inputs.nextLine();
-        String conv = conversions(str);
-        boolean isPali = isPalindrome(conv);
-        System.out.println(isPali);
-        inputs.close();
+        return true;
     }
 }
