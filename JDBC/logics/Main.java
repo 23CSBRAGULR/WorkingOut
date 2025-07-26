@@ -10,21 +10,64 @@ public class Main {
     public final String pass = "1269";
 
     public static void main(String[] args) throws SQLException {
+        Main start = new Main();
+        start.choice();
+    }
+
+    public void choice() throws SQLException {
         Main ob = new Main();
-        System.out.println("Before insertion");
-        ob.readTable();
-        System.out.println();
-        ob.insertTable();
-        System.out.println("After insertion");
-        ob.readTable();
-        System.out.println("\nNow Insert using PST");
-        ob.insertUsingPreparedStatement();
-        System.out.println("After insertion using PST");
-        ob.readTable();
-        System.out.println("Deletion");
-        ob.deleteFromTable();
-        System.out.println("After Deletion(s)");
-        ob.readTable();
+        System.out.println("1. Read Table");
+        System.out.println("2. Insert into Table");
+        System.out.println("3. Insert using PreparedStatement");
+        System.out.println("4. Delete from Table");
+        System.out.println("5. Update Table");
+        System.out.println("6. Exit");
+        int ch = 0;
+        try {
+            System.out.print("Enter the number corresponding to your choice : ");
+            ch = inputs.nextInt();
+            inputs.nextLine();
+        }
+
+        catch (InputMismatchException e) {
+            inputs.nextLine(); // Clear the invalid input
+            ob.inputMismatch();
+            ob.choice(); // Recursive call to allow user to try again
+        }
+
+        switch(ch) {
+            case 1:
+                System.out.println("Read");
+                ob.readTable();
+                break;
+            case 2:
+                System.out.println("Insertion");
+                ob.insertIntoTable();
+                break;
+            case 3:
+                System.out.println("Insertion (Using Prepared Statement Class)");
+                ob.insertUsingPreparedStatement();
+                break;
+            case 4:
+                System.out.println("Deletion");
+                ob.deleteFromTable();
+                break;
+            case 5:
+                System.out.println("Udpate");
+                ob.updateTable();
+                break;
+            case 6:
+                System.out.println("Exit");
+                System.exit(0);
+            default:
+                ob.inputMismatch();
+                ob.choice(); // Recursive call to allow user to try again
+                break;
+        }
+    }
+
+    public void inputMismatch() {
+        System.out.println("Invalid choice. Enter a valid NUMBER corresponding to your choice");
     }
 
     public void readTable() throws SQLException {
@@ -38,12 +81,13 @@ public class Main {
             System.out.println("Student Name : " + rs.getString(2));
             System.out.println("GPA : " + rs.getFloat(3));
         }
-
         fc.close();
         st.close();
+
+        this.choice();
     }
 
-    public void insertTable() throws SQLException {
+    public void insertIntoTable() throws SQLException {
         Connection fc = DriverManager.getConnection(url, name, pass);
         System.out.print("\nEnter ID: ");
         int id = inputs.nextInt();
@@ -60,6 +104,8 @@ public class Main {
         System.out.println("Number of rows affected : " + affectedRows + "\n");
         fc.close();
         st.close();
+
+        this.choice();
     }
 
     public void insertUsingPreparedStatement() throws SQLException {
@@ -82,6 +128,8 @@ public class Main {
         System.out.println("Number of rows affected : " + affectedRows + "\n");
         fc.close();
         pst.close();
+
+        this.choice();
     }
 
     public void deleteFromTable() throws SQLException {
@@ -96,5 +144,27 @@ public class Main {
         System.out.println("\nPassed Query : " + pst.toString());
         System.out.println("Number of rows affected : " + affectedRows + "\n");
         fc.close();
+
+        this.choice();
+    }
+
+    public void updateTable() throws SQLException {
+        Connection fc = DriverManager.getConnection(url, name, pass);
+        System.out.print("\nEnter ID to update: ");
+        int id = inputs.nextInt();
+        inputs.nextLine(); // Consume newline
+        System.out.print("Enter new Marks: ");
+        double newMarks = inputs.nextDouble();
+        inputs.nextLine(); // Consume newline
+        String query = "update test set marks = ? where id = ?;";
+        PreparedStatement pst = fc.prepareStatement(query);
+        pst.setDouble(1, newMarks);
+        pst.setInt(2, id);
+        int affectedRows = pst.executeUpdate(); // executeUpdate() returns the number of rows affected by the query
+        System.out.println("\nPassed Query : " + pst.toString());
+        System.out.println("Number of rows affected : " + affectedRows + "\n");
+        fc.close();
+
+        this.choice();
     }
 }
