@@ -11,12 +11,13 @@ public class Main {
 
     public static void main(String[] args) throws SQLException {
         Main start = new Main();
+        System.out.println("Student's Test Database");
         start.choice();
     }
 
     public void choice() throws SQLException {
         Main ob = new Main();
-        System.out.println("1. Read Table");
+        System.out.println("\n1. Read Table");
         System.out.println("2. Insert into Table");
         System.out.println("3. Insert using PreparedStatement");
         System.out.println("4. Delete from Table");
@@ -37,27 +38,27 @@ public class Main {
 
         switch(ch) {
             case 1:
-                System.out.println("Read");
+                System.out.println("\nRead\n");
                 ob.readTable();
                 break;
             case 2:
-                System.out.println("Insertion");
+                System.out.println("\nInsertion\n");
                 ob.insertIntoTable();
                 break;
             case 3:
-                System.out.println("Insertion (Using Prepared Statement Class)");
+                System.out.println("\nInsertion (Using Prepared Statement Class)\n");
                 ob.insertUsingPreparedStatement();
                 break;
             case 4:
-                System.out.println("Deletion");
+                System.out.println("\nDeletion\n");
                 ob.deleteFromTable();
                 break;
             case 5:
-                System.out.println("Udpate");
+                System.out.println("\nUdpate\n");
                 ob.updateTable();
                 break;
             case 6:
-                System.out.println("Exit");
+                System.out.println("\nExit");
                 System.exit(0);
             default:
                 ob.inputMismatch();
@@ -67,7 +68,7 @@ public class Main {
     }
 
     public void inputMismatch() {
-        System.out.println("Invalid choice. Enter a valid NUMBER corresponding to your choice");
+        System.out.println("\nInvalid choice. Enter a valid NUMBER corresponding to your choice\n");
     }
 
     public void readTable() throws SQLException {
@@ -156,7 +157,7 @@ public class Main {
         System.out.print("Enter new Marks: ");
         double newMarks = inputs.nextDouble();
         inputs.nextLine(); // Consume newline
-        String query = "update test set marks = ? where id = ?;";
+        String query = "update test set gpa = ? where id = ?;";
         PreparedStatement pst = fc.prepareStatement(query);
         pst.setDouble(1, newMarks);
         pst.setInt(2, id);
